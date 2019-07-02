@@ -28,6 +28,14 @@ class Deck extends Component {
         this.setState({ index : this.state.index + 1});
     }
 
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.data !== this.props.data){
+            this.setState({index: 0})
+        }
+
+
+    }
     componentWillUpdate(){
         UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
@@ -88,7 +96,7 @@ class Deck extends Component {
         });
         
         return {
-            ...position.getLayout(),
+          ...position.getLayout(),
             transform: [{rotate: rotate}]
         };
 
@@ -98,13 +106,13 @@ class Deck extends Component {
             return this.props.renderNoMoreCards();
         }
         return this.props.data.map((item, i) => {
-            console.log(i);
             if(i < this.state.index) return null;
             if(i === this.state.index){
                 return(
                     <Animated.View
                     key={item.id}
-                    style={[this.getCardStyle(), styles.cardStyle]}
+                    style={[this.getCardStyle(), styles.cardStyle,
+                    , { zIndex: 99 }]}
                     {...this.state.panResp.panHandlers}>
                         {this.props.renderCard(item)}
                     </Animated.View>
@@ -114,7 +122,7 @@ class Deck extends Component {
 
             return (
                 <Animated.View key={item.id} style={[styles.cardStyle,
-                {top: 10* (i-this.state.index)}]}
+                {top: 10* (i-this.state.index), zIndex: 5 }]}
                 >
                 {this.props.renderCard(item)}
                 </Animated.View>);
